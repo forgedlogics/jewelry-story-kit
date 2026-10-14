@@ -56,3 +56,15 @@ The interface supports generating and downloading a new concept image from the c
 5. Validate one real generation before advertising the feature as live. Generated concepts are illustrative rather than verified production renders.
 
 The demo server uses a global ten-request hourly cap per process. Use one worker/instance; a production deployment needs durable rate and budget limits. Briefs are sent to the configured provider on generation and are not stored by this application. The server does not expose provider credentials or raw provider errors.
+
+
+## Cloudflare deployment (current)
+
+The public frontend uses the Cloudflare Worker in `cloudflare/worker.mjs`, configured by `wrangler.jsonc`. It streams the image response from OpenAI to the browser and keeps the API key private. The older Python/Render bridge is an alternative only.
+
+- Deploy: `npx wrangler@4 deploy`
+- Private secret: in Cloudflare → Workers & Pages → jewelry-story-kit-images → Settings → Variables and Secrets, add a **Secret** named `OPENAI_API_KEY`. Or use `npx wrangler@4 secret put OPENAI_API_KEY` interactively; never paste the key into source code or chat.
+- Model: `gpt-image-2`, one 1024×1024 PNG at low quality per request.
+- Persistent shared allowance: ten generation attempts per UTC day across all visitors, enforced before the provider call by a SQLite-backed Durable Object. Failed attempts count. This limits request count rather than guaranteeing a currency spending cap.
+- No prompts or images are saved by the Worker; only the daily counter is persisted. The prompt is sent to OpenAI when a visitor requests generation.
+- Check `/health`: `ready` becomes true when the key is present. This checks configuration only; real generation must still be tested to verify API credit and model access.

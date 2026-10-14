@@ -5,3 +5,8 @@
 .env.*
 __pycache__/
 .venv/
+
+.wrangler/
+.dev.vars
+.dev.vars.*
+node_modules/

@@ -1,0 +1,10 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "jewelry-story-kit-images",
+  "main": "cloudflare/worker.mjs",
+  "compatibility_date": "2026-10-14",
+  "workers_dev": true,
+  "vars": { "IMAGE_MODEL": "gpt-image-2", "DAILY_IMAGE_LIMIT": "10" },
+  "durable_objects": { "bindings": [{ "name": "IMAGE_BUDGET", "class_name": "ImageBudget" }] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["ImageBudget"] }]
+}
