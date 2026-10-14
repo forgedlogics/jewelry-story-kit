@@ -1,3 +1,7 @@
 .DS_Store
 .openai/
 .site-artifacts/
+.env
+.env.*
+__pycache__/
+.venv/

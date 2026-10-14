@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: jewelry-story-kit-images
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn server:app --host 0.0.0.0 --port $PORT --workers 1
+    envVars:
+      - key: IMAGE_API_KEY
+        sync: false
+      - key: IMAGE_API_BASE_URL
+        sync: false
+      - key: IMAGE_MODEL
+        sync: false
+      - key: IMAGE_HOURLY_LIMIT
+        value: '10'
