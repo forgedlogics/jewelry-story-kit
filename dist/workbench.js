@@ -210,7 +210,7 @@ function render() {
     )
     .join(
       "",
-    )}</select><button id="handoff">Send current work →</button>${view === "pricing" && current ? '<button id="applyStones">Use assigned stone budget</button>' : ""}</div></div>${p.importedEstimate ? `<p class="muted">Estimate received from Pricing Calculator: ${money(p.importedEstimate.retail)} retail before tax. Confirm costs before publishing a price.</p>` : ""}<iframe id="toolFrame" title="${e($("#title").textContent)}" src="tools/${view}/index.html?v=tools-20261017"></iframe>`;
+    )}</select><button id="handoff">Send current work →</button>${view === "pricing" && current ? '<button id="applyStones">Use assigned stone budget</button>' : ""}</div></div>${p.importedEstimate ? `<p class="muted">Estimate received from Pricing Calculator: ${money(p.importedEstimate.retail)} retail before tax. Confirm costs before publishing a price.</p>` : ""}<iframe id="toolFrame" title="${e($("#title").textContent)}" src="tools/${view}/index.html?v=neutral-20261017"></iframe>`;
   frameContext = { project: p.id, module: view, token: crypto.randomUUID() };
   $("#toolFrame").onload = () => sendInit();
 }

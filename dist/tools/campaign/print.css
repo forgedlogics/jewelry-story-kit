@@ -7,10 +7,10 @@
   #print-deck { display: block !important; color: #241e1b; font-family: Arial, sans-serif; }
   .book-page { box-sizing: border-box; height: 297mm; padding: 18mm; break-after: page; page-break-after: always; background: #f4efe8; overflow: hidden; }
   .book-page:last-child { break-after: auto; page-break-after: auto; }
-  .book-kicker { margin: 0 0 9mm; color: #8f535b; font-size: 10px; font-weight: 800; letter-spacing: .17em; text-transform: uppercase; }
+  .book-kicker { margin: 0 0 9mm; color: #8b7656; font-size: 10px; font-weight: 800; letter-spacing: .17em; text-transform: uppercase; }
   .book-title { margin: 0; font: 48px/.98 Georgia, serif; letter-spacing: -.03em; }
   .book-subtitle { max-width: 132mm; margin: 12mm 0 0; font: 21px/1.35 Georgia, serif; }
-  .book-cover { display: flex; flex-direction: column; justify-content: space-between; background: #44212a; color: #fff; }
+  .book-cover { display: flex; flex-direction: column; justify-content: space-between; background: #292a24; color: #fff; }
   .book-cover .book-kicker { color: #edcfb7; }
   .book-cover .book-title { max-width: 145mm; font-size: 66px; }
   .book-meta { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
@@ -24,7 +24,7 @@
   .book-spread .book-title { font-size: 39px; }
   .book-plan { display: grid; grid-template-columns: 1fr 1fr; gap: 12mm; margin-top: 18mm; }
   .book-plan article { border-top: 1px solid #b9aaa0; padding-top: 5mm; }
-  .book-plan h3 { margin: 0 0 3mm; color: #8f535b; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; }
+  .book-plan h3 { margin: 0 0 3mm; color: #8b7656; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; }
   .book-plan p { margin: 0; font-size: 14px; line-height: 1.55; }
   .book-footer { position: absolute; right: 18mm; bottom: 13mm; color: #8b7c75; font-size: 9px; letter-spacing: .08em; text-transform: uppercase; }
 }
