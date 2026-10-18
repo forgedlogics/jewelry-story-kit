@@ -6,23 +6,36 @@ One project workspace for jewelry design, CAD pricing, stones, launch copy, and 
 
 ## Start here
 
-1. Create a project with its piece name, material, and inspiration.
-2. Open **CAD & pricing**. Enter weight or import STL / mesh-based 3DM, add supplier costs, and create a client quote.
-3. Record stones in **Stone library**, assign them to the project, then apply the budget in pricing.
-4. Open **Story & copy**. Build the template-based launch story, then edit each text block directly.
-5. Open **Campaign studio**. Add a sketch and approved product/model images, then export the editorial PDF. Product narrative and email copy travel into the campaign guide and book.
+The home screen is a dashboard for four independent tools:
 
-Try the Tidal Arc Ring example to explore the workflow.
+- **Story Kit** — product stories, editable launch copy, and image briefs.
+- **Campaign Studio** — approved campaign imagery and editorial PDF books.
+- **Diamond Ledger** — direct access to the existing private inventory and market-comparison app, plus a local stone-cost handoff to Pricing Calculator.
+- **Pricing Calculator** — CAD weight, production costs, selling prices, and client quotes.
 
-## Connected project data
+Open any tool directly. No jewelry-piece project is required. Each embedded tool
+keeps its own browser-local working session.
 
-A shared design brief feeds all three tools. Estimates, editable story blocks, campaign steps, quote photos, and campaign images are saved per project in IndexedDB. Switching tools or reloading restores the work. Use the design brief to update shared context; existing copy stays intact until you rebuild it.
+## Connect tools when you choose
 
-Stone records include a supplier, carat weight, total USD price, source URL, verification date, project assignment, and status. Price per carat is calculated from the recorded total. Sold records are excluded from the budget. A row represents one stone or one parcel, not an automatic quantity multiplier.
+Use **Send to another tool** for a one-time copy of the current context. Calculator
+estimates carry into the receiving tool as an estimate note. Story copy carries
+into Campaign Studio's guide/book; a generated story image can become its product
+image. Source and destination remain independent after the handoff.
+
+For ongoing shared work, create an optional **linked workspace** and select it in
+the tool's **Work mode** dropdown. Existing saved piece-based workspaces remain
+available under **Saved linked work**. They are not the software's main navigation.
+
+Diamond Ledger's private database remains in the original application. Its dashboard
+entry opens that app separately; it is not silently replaced or automatically
+synchronized. The browser-local stone handoff lets you record a verified stone cost
+and explicitly send it to Pricing Calculator. You can also assign those records to
+an optional linked workspace.
 
 ## Storage and backups
 
-This version stores everything in the current browser, under this site's origin. It does not provide accounts or cloud sync. Clearing browser data removes saved work. Export a workspace backup regularly; import it on another device or origin to restore your projects and images. Import replaces the current workspace after confirmation. Individual project exports use the same backup format.
+Embedded-tool working sessions and linked work are stored in the current browser, under this site's origin. The original private Diamond Ledger keeps its existing separate storage. It does not provide accounts or cloud sync. Clearing browser data removes saved work. Export a workspace backup regularly; import it on another device or origin to restore your projects and images. Import replaces the current workspace after confirmation. Individual project exports use the same backup format.
 
 Campaign images support PNG, JPEG, WebP, and GIF up to 8 MB each. Backup import is limited to 50 MB. CAD files are processed locally; their resulting volume and weight are saved, while original CAD files must be kept separately.
 

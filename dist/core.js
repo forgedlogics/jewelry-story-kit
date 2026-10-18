@@ -40,6 +40,21 @@
       data.stones.length > 10000
     )
       return false;
+    if (
+      data.tools &&
+      (!object(data.tools) ||
+        !Object.entries(data.tools).every(
+          ([key, p]) =>
+            ["story", "campaign", "pricing"].includes(key) &&
+            object(p) &&
+            ["id", "name", "material", "inspiration"].every((k) =>
+              text(p[k]),
+            ) &&
+            object(p.modules) &&
+            Object.values(p.modules).every(moduleData),
+        ))
+    )
+      return false;
     const ids = new Set();
     for (const p of data.projects) {
       if (
@@ -82,7 +97,25 @@
       .filter((s) => s.projectId === id && s.status !== "Sold")
       .reduce((sum, s) => sum + s.price, 0);
   }
-  const api = { validWorkspace, stoneBudget };
+  function transferTool(source, destination, target) {
+    const result = structuredClone(destination);
+    for (const key of ["name", "material", "inspiration", "detail", "client"])
+      if (typeof source[key] === "string") result[key] = source[key];
+    if (source.modules.story)
+      result.modules.story = structuredClone(source.modules.story);
+    const estimate =
+      source.modules.pricing?.estimate || source.importedEstimate;
+    if (estimate) result.importedEstimate = structuredClone(estimate);
+    if (target === "campaign" && source.modules.story?.image) {
+      result.modules.campaign = result.modules.campaign || {};
+      result.modules.campaign.assets = {
+        ...(result.modules.campaign.assets || {}),
+        product: source.modules.story.image,
+      };
+    }
+    return result;
+  }
+  const api = { validWorkspace, stoneBudget, transferTool };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   else root.WorkbenchCore = api;
 })(typeof globalThis !== "undefined" ? globalThis : this);

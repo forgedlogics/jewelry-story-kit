@@ -456,3 +456,31 @@ th {
     break-inside: avoid;
   }
 }
+.ledger-link {
+  display: inline-block;
+  text-decoration: none;
+  padding: 11px 16px;
+  border-radius: 5px;
+}
+.tool-note label {
+  margin: 0 0 4px;
+}
+.tool-note select {
+  margin: 0 0 8px;
+}
+.tool-note > div {
+  flex: 1;
+}
+.tool-note button {
+  margin: 4px 6px 0 0;
+}
+.tool-cards .card {
+  display: flex;
+  flex-direction: column;
+}
+.tool-cards .card p {
+  flex: 1;
+}
+.tool-cards .badge {
+  align-self: start;
+}

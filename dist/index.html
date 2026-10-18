@@ -17,11 +17,15 @@
       >
       <p class="eyebrow">THE STUDIO</p>
       <nav>
-        <button data-view="projects" class="active">▦ Projects</button
-        ><button data-view="stones">◇ Stone library</button>
+        <button data-view="dashboard" class="active">▦ All tools</button>
+        <button data-tool="story">Story Kit</button>
+        <button data-tool="campaign">Campaign Studio</button>
+        <button data-view="stones">Diamond Ledger</button>
+        <button data-tool="pricing">Pricing Calculator</button>
+        <button data-view="projects">Saved linked work</button>
       </nav>
       <div class="project-nav" id="projectNav" hidden>
-        <p class="eyebrow">CURRENT PROJECT</p>
+        <p class="eyebrow">OPTIONAL LINKED WORK</p>
         <p id="projectName"></p>
         <nav>
           <button data-view="brief">01 · Design brief</button
@@ -49,10 +53,10 @@
     <div class="shell">
       <header>
         <div>
-          <span class="eyebrow">FROM THE FIRST LINE TO THE FINAL LAUNCH</span>
-          <h1 id="title">Projects</h1>
+          <span class="eyebrow">YOUR JEWELRY TOOLS, TOGETHER</span>
+          <h1 id="title">All tools</h1>
         </div>
-        <button class="primary" id="new">＋ New project</button>
+        <button class="primary" id="new">＋ Link work across tools</button>
       </header>
       <main id="main"></main>
       <p id="notice" role="status" aria-live="polite"></p>
@@ -64,7 +68,7 @@
     <dialog id="newDialog" aria-labelledby="newTitle">
       <form id="newForm">
         <div class="row">
-          <h2 id="newTitle">Start with a piece.</h2>
+          <h2 id="newTitle">Create a linked workspace.</h2>
           <button type="button" id="close" aria-label="Close">✕</button>
         </div>
         <label
@@ -72,7 +76,7 @@
             name="name"
             required
             maxlength="150"
-            placeholder="Tidal Arc Ring" /></label
+            placeholder="Name this optional workspace" /></label
         ><label
           >Material<input
             name="material"
@@ -85,7 +89,7 @@
             maxlength="1200"
             placeholder="Where did the idea begin?"
           ></textarea></label
-        ><button class="primary">Create project →</button>
+        ><button class="primary">Create linked workspace →</button>
       </form>
     </dialog>
     <script src="core.js"></script>
