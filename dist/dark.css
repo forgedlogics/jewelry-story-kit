@@ -1,0 +1,62 @@
+/* Shared screen theme. Print/PDF layouts keep their original paper palette. */
+@media screen {
+  :root {
+    color-scheme: dark;
+    --paper: #000;
+    --page: #000;
+    --ink: #fffdf7;
+    --muted: #c1baae;
+    --line: #393226;
+    --gold: #d5b66c;
+    --card: #0d0d0c;
+    --surface: #0d0d0c;
+    --accent: #d5b66c;
+    --accent-strong: #ead295;
+    --good: #d5b66c;
+    --rose: #d5b66c;
+    --wine: #d5b66c;
+    --soft: #211c12;
+  }
+  body { background: #000 !important; color: var(--ink); }
+  .sidebar, .topbar { background: #080808; }
+  .canvas, .workspace { background: transparent; }
+  .card, .panel, .content-item, .result, .return-tile, .moodboard,
+  .shot-list article, .quick-guide div, .result-list div, .file-status,
+  .empty-state, .saved-quote, .metric, .case-grid section { background: #0d0d0c; color: var(--ink); }
+  .hero { background: linear-gradient(120deg,#19150d,#080808); border-color: #51432a; }
+  .hero p, .lede, .card p, .placeholder, .guide p, .guide-block p,
+  .focus-copy>p:not(.eyebrow), .sidebar input::placeholder,
+  .sidebar textarea::placeholder { color: var(--muted); }
+  h1, h2, h3, .eyebrow, .badge, .tag, .guide-block b, .brand { color: var(--gold); }
+  .brand span { color: var(--ink); }
+  .sidebar nav button { color: var(--muted); }
+  .sidebar nav button.active, .tool-note, .badge, .guide, .guide-card,
+  .quick-guide span, .result-list .important, .metric.featured, .note { background: #211b11; color: var(--gold); }
+  .tool-note { border-color: var(--line); }
+  .primary, .button, .btn-primary, .btn-success, #livePriceButton,
+  #cadWeightButton, #saveQuoteButton { background: var(--gold); border-color: var(--gold); color: #100e08; }
+  .primary:hover, .button:hover, .btn-primary:hover, .btn-success:hover,
+  #livePriceButton:hover, #cadWeightButton:hover { background: #ead295; color: #100e08; }
+  button:hover, .btn-secondary, #resetButton { background: #211c12; color: var(--ink); }
+  .primary:hover { background: #ead295; }
+  input, textarea, select, .sidebar input, .sidebar textarea,
+  .brief-form input:not([type=file]), .brief-form textarea { background: #10100e; color: var(--ink); border-color: #514632; }
+  input::placeholder, textarea::placeholder { color: #9e978b; }
+  button, .secondary, .outline, .empty, .copy-block, .guide-block { border-color: var(--line); }
+  .secondary, .outline, .text-button { color: var(--gold); }
+  .progress button { color: var(--muted); }
+  .progress button.active { color: var(--gold); }
+  .progress button.active b { background: var(--gold); color: #100e08; border-color: var(--gold); }
+  .progress i { background: var(--line); }
+  .sketch-drop, .shot-list label { border-color: #766443; }
+  .empty p, .field-help, .note, .autosave, footer, #pieceLabel { color: var(--muted); }
+  #notice { color: var(--gold); }
+  .danger { color: #efbf83; }
+  iframe { background: #000; }
+  dialog { background: #080808; color: var(--ink); }
+  dialog::backdrop { background: #000b; }
+  button:focus-visible, a:focus-visible, input:focus-visible,
+  textarea:focus-visible, select:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+  input[type=checkbox] { accent-color: var(--gold); }
+  ::selection { background: #71582c; color: #fff; }
+}
