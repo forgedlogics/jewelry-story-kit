@@ -19,7 +19,7 @@ const money = (n) =>
 let db,
   state = { version: 1, projects: [], stones: [] },
   current = null,
-  view = "projects",
+  view = "dashboard",
   saveQueue = Promise.resolve(),
   frameContext = null;
 function notice(text) {
@@ -84,8 +84,27 @@ async function initialize() {
   }
   render();
 }
+function toolSession(tool) {
+  state.tools = state.tools || {};
+  return (
+    state.tools[tool] ||
+    (state.tools[tool] = {
+      id: "tool:" + tool,
+      name: "",
+      material: "",
+      inspiration: "",
+      detail: "",
+      client: "",
+      modules: {},
+    })
+  );
+}
 function project() {
-  return state.projects.find((p) => p.id === current);
+  return current
+    ? state.projects.find((p) => p.id === current)
+    : ["story", "campaign", "pricing"].includes(view)
+      ? toolSession(view)
+      : null;
 }
 function show(next) {
   view = next;
@@ -98,23 +117,64 @@ function open(id, next = "brief") {
 }
 function render() {
   const p = project();
-  $("#projectNav").hidden = !p;
+  $("#projectNav").hidden = !current || !p;
   $("#projectName").textContent = p?.name || "";
   document
     .querySelectorAll("[data-view]")
     .forEach((b) => b.classList.toggle("active", b.dataset.view === view));
   $("#title").textContent =
     {
-      projects: "Your projects",
-      stones: "Stone library",
+      dashboard: "Your tools",
+      projects: "Saved linked work",
+      stones: "Diamond Ledger",
       brief: p?.name,
-      pricing: "CAD & pricing",
-      story: "Story & copy",
-      campaign: "Campaign studio",
+      pricing: "Pricing Calculator",
+      story: "Story Kit",
+      campaign: "Campaign Studio",
     }[view] || "Your projects";
   const main = $("#main");
+  if (view === "dashboard") {
+    main.innerHTML = `<section class="hero"><div><p class="eyebrow">FOUR TOOLS. YOUR WAY OF WORKING.</p><h2>Open the tool you need.<br>Connect it when you want.</h2><p>Use each tool on its own, or send a brief, estimate, or launch story to another tool. No jewelry-piece project is required.</p></div><div class="hero-mark" aria-hidden="true">◇</div></section><div class="cards tool-cards">${[
+      [
+        "story",
+        "01",
+        "Story Kit",
+        "Write and edit product stories, social copy, and launch emails.",
+        "Open Story Kit",
+      ],
+      [
+        "campaign",
+        "02",
+        "Campaign Studio",
+        "Build visual campaigns and export an editorial campaign book.",
+        "Open Campaign Studio",
+      ],
+      [
+        "stones",
+        "03",
+        "Diamond Ledger",
+        "Access your private inventory, or prepare stone costs to use in pricing.",
+        "Open Diamond Ledger",
+      ],
+      [
+        "pricing",
+        "04",
+        "Pricing Calculator",
+        "Estimate CAD weight, production costs, selling prices, and client quotes.",
+        "Open Pricing Calculator",
+      ],
+    ]
+      .map(
+        ([id, num, title, description, label]) =>
+          `<article class="card"><span class="badge">TOOL ${num}</span><h3>${title}</h3><p>${description}</p><button ${id === "stones" ? 'data-view="stones"' : `data-tool="${id}"`} class="primary">${label} ↗</button></article>`,
+      )
+      .join(
+        "",
+      )}</div><div class="card" style="margin-top:24px"><h3>Work together, only when you choose.</h3><p>Use “Send to another tool” for a one-time handoff. Create an optional linked workspace if you want several tools to share the same ongoing brief.</p><button data-view="projects">Open saved linked work →</button></div>`;
+    return;
+  }
   if (view === "projects") {
-    main.innerHTML = `<section class="hero"><div><p class="eyebrow">ONE PIECE. ONE CONNECTED WORKSPACE.</p><h2>From a design idea to a piece ready to launch.</h2><p>Keep the brief, CAD estimate, stones, product story, and campaign imagery together. Start where the idea starts.</p><button class="primary" data-new>Create a jewelry project →</button></div><div class="hero-mark" aria-hidden="true">◇</div></section><div class="row"><h2>On your bench</h2><span class="muted">${state.projects.length} projects</span></div><div class="actions"><button id="importPricing">Import saved calculator projects</button></div><input id="search" class="search" placeholder="Search your pieces…" aria-label="Search projects"><div class="cards" id="projectCards">${state.projects.map(card).join("")}</div>${!state.projects.length ? '<div class="empty"><h3>Give your next piece a place to grow.</h3><p>Start a project, or explore the workflow with an example.</p><button id="example">Try the Tidal Arc Ring →</button></div>' : ""}`;
+    main.innerHTML = `<div class="card"><h2>Optional linked workspaces</h2><p>Keep tools independent by default. Use a linked workspace only when you want them to share a brief and saved work over time.</p><button class="primary" data-new>Create linked workspace →</button></div><div class="actions"><button id="importPricing">Import saved calculator projects</button></div><input id="search" class="search" placeholder="Search linked work…" aria-label="Search linked work"><div class="cards" id="projectCards">${state.projects.map(card).join("")}</div>${!state.projects.length ? '<p class="muted">No linked workspaces. All four tools are available from All tools.</p>' : ""}`;
     return;
   }
   if (view === "stones") {
@@ -138,7 +198,19 @@ function render() {
     campaign:
       "Upload approved visuals, build the campaign guide, and export the editorial PDF. Images save locally with this project.",
   };
-  main.innerHTML = `<div class="tool-note"><span>${labels[view]}</span>${view === "pricing" ? '<button id="applyStones">Use assigned stone budget</button>' : '<button data-view="brief">Edit design brief</button>'}</div><iframe id="toolFrame" title="${e($("#title").textContent)}" src="tools/${view}/index.html"></iframe>`;
+  main.innerHTML = `<div class="tool-note"><div><label for="workMode">Work mode</label><select id="workMode"><option value="">Independent · this tool only</option>${state.projects.map((x) => `<option value="${e(x.id)}" ${current === x.id ? "selected" : ""}>Linked: ${e(x.name)}</option>`).join("")}</select><span class="muted">${current ? "Tools share this linked workspace." : "Changes stay in this tool until you choose to send them."}</span></div><div><label for="handoffTarget">Send to another tool</label><select id="handoffTarget">${[
+    "story",
+    "campaign",
+    "pricing",
+  ]
+    .filter((x) => x !== view)
+    .map(
+      (x) =>
+        `<option value="${x}">${{ story: "Story Kit", campaign: "Campaign Studio", pricing: "Pricing Calculator" }[x]}</option>`,
+    )
+    .join(
+      "",
+    )}</select><button id="handoff">Send current work →</button>${view === "pricing" && current ? '<button id="applyStones">Use assigned stone budget</button>' : ""}</div></div>${p.importedEstimate ? `<p class="muted">Estimate received from Pricing Calculator: ${money(p.importedEstimate.retail)} retail before tax. Confirm costs before publishing a price.</p>` : ""}<iframe id="toolFrame" title="${e($("#title").textContent)}" src="tools/${view}/index.html"></iframe>`;
   frameContext = { project: p.id, module: view, token: crypto.randomUUID() };
   $("#toolFrame").onload = () => sendInit();
 }
@@ -185,7 +257,7 @@ function safeSource(url) {
 function renderStones() {
   const p = project();
   $("#main").innerHTML =
-    `<p class="muted">Record verified supplier prices, then assign stones to a design. Each row is one stone or parcel; price is the total for that row. Existing private Diamond Ledger records are not imported automatically.</p><details><summary>Add a stone record</summary><form id="stoneForm" class="card stone-form"><div class="grid"><label>Stock number / description<input name="name" required maxlength="200"></label><label>Supplier<input name="supplier" maxlength="200"></label><label>Total carat weight<input name="carat" type="number" min="0.001" step="0.001" required></label><label>Total price (USD)<input name="price" type="number" min="0" step="0.01" required></label><label>Source URL<input name="source" type="url" required placeholder="https://supplier.example/stone"></label><label>Verified on<input name="verified" type="date" required></label><label>Assign to project<select name="projectId"><option value="">Unassigned</option>${state.projects.map((c) => `<option value="${e(c.id)}" ${p?.id === c.id ? "selected" : ""}>${e(c.name)}</option>`).join("")}</select></label><label>Status<select name="status"><option>Available</option><option>Memo</option><option>On hold</option><option>Sold</option></select></label></div><button class="primary">Save stone record</button></form></details><div class="table-wrap"><table><thead><tr><th>STONE / SUPPLIER</th><th>CARAT</th><th>TOTAL / PER CT</th><th>PROJECT / STATUS</th><th>EVIDENCE</th><th></th></tr></thead><tbody>${state.stones.map((s) => `<tr><td>${e(s.name)}<br><span class="muted">${e(s.supplier)}</span></td><td>${e(s.carat)}</td><td>${money(s.price)}<br><span class="muted">${money(s.price / s.carat)}/ct</span></td><td><select data-stone="${e(s.id)}" data-field="projectId" aria-label="Project for ${e(s.name)}"><option value="">Unassigned</option>${state.projects.map((c) => `<option value="${e(c.id)}" ${s.projectId === c.id ? "selected" : ""}>${e(c.name)}</option>`).join("")}</select><select data-stone="${e(s.id)}" data-field="status" aria-label="Status for ${e(s.name)}">${["Available", "Memo", "On hold", "Sold"].map((v) => `<option ${v === s.status ? "selected" : ""}>${v}</option>`).join("")}</select></td><td>${safeSource(s.source) ? `<a href="${e(safeSource(s.source))}" target="_blank" rel="noopener">Source ↗</a>` : "No source"}<br>${e(s.verified)}</td><td><button class="danger" data-remove-stone="${e(s.id)}">Remove</button></td></tr>`).join("")}</tbody></table></div>${!state.stones.length ? '<div class="empty">No stone records yet. Add a verified supplier price to start.</div>' : ""}<p class="muted">For your existing private inventory and market comparison: <a href="https://nikunj-diamond-ledger.nikunj-verma.chatgpt.site" target="_blank" rel="noopener">Open original Diamond Ledger ↗</a></p>`;
+    `<div class="card"><h2>Your Diamond Ledger</h2><p>Open the existing private inventory and market-comparison app with your saved records.</p><a class="primary ledger-link" href="https://nikunj-diamond-ledger.nikunj-verma.chatgpt.site" target="_blank" rel="noopener">Open private Diamond Ledger ↗</a></div><h2 style="margin-top:28px">Stone handoff to pricing</h2><p class="muted">These browser-local records are separate from your private Ledger database. Record verified supplier prices, then assign stones to a design. Each row is one stone or parcel; price is the total for that row. Existing private Diamond Ledger records are not imported automatically.</p><details><summary>Add a stone record</summary><form id="stoneForm" class="card stone-form"><div class="grid"><label>Stock number / description<input name="name" required maxlength="200"></label><label>Supplier<input name="supplier" maxlength="200"></label><label>Total carat weight<input name="carat" type="number" min="0.001" step="0.001" required></label><label>Total price (USD)<input name="price" type="number" min="0" step="0.01" required></label><label>Source URL<input name="source" type="url" required placeholder="https://supplier.example/stone"></label><label>Verified on<input name="verified" type="date" required></label><label>Assign to project<select name="projectId"><option value="">Unassigned</option>${state.projects.map((c) => `<option value="${e(c.id)}" ${p?.id === c.id ? "selected" : ""}>${e(c.name)}</option>`).join("")}</select></label><label>Status<select name="status"><option>Available</option><option>Memo</option><option>On hold</option><option>Sold</option></select></label></div><button class="primary">Save stone record</button></form></details><div class="table-wrap"><table><thead><tr><th>STONE / SUPPLIER</th><th>CARAT</th><th>TOTAL / PER CT</th><th>PROJECT / STATUS</th><th>EVIDENCE</th><th></th></tr></thead><tbody>${state.stones.map((s) => `<tr><td>${e(s.name)}<br><span class="muted">${e(s.supplier)}</span></td><td>${e(s.carat)}</td><td>${money(s.price)}<br><span class="muted">${money(s.price / s.carat)}/ct</span></td><td><select data-stone="${e(s.id)}" data-field="projectId" aria-label="Project for ${e(s.name)}"><option value="">Unassigned</option>${state.projects.map((c) => `<option value="${e(c.id)}" ${s.projectId === c.id ? "selected" : ""}>${e(c.name)}</option>`).join("")}</select><select data-stone="${e(s.id)}" data-field="status" aria-label="Status for ${e(s.name)}">${["Available", "Memo", "On hold", "Sold"].map((v) => `<option ${v === s.status ? "selected" : ""}>${v}</option>`).join("")}</select></td><td>${safeSource(s.source) ? `<a href="${e(safeSource(s.source))}" target="_blank" rel="noopener">Source ↗</a>` : "No source"}<br>${e(s.verified)}</td><td><button data-price-stone="${e(s.id)}">Send to Pricing Calculator</button><button class="danger" data-remove-stone="${e(s.id)}">Remove</button></td></tr>`).join("")}</tbody></table></div>${!state.stones.length ? '<div class="empty">No stone records yet. Add a verified supplier price to start.</div>' : ""}<p class="muted">For your existing private inventory and market comparison: <a href="https://nikunj-diamond-ledger.nikunj-verma.chatgpt.site" target="_blank" rel="noopener">Open original Diamond Ledger ↗</a></p>`;
 }
 function newProject(data) {
   const now = new Date().toISOString();
@@ -286,7 +358,57 @@ $("#newForm").onsubmit = (event) => {
 document.addEventListener("click", (event) => {
   const b = event.target.closest("button");
   if (!b) return;
-  if (b.dataset.view) show(b.dataset.view);
+  if (b.dataset.tool) {
+    current = null;
+    show(b.dataset.tool);
+  }
+  if (b.dataset.view) {
+    if (["dashboard", "stones", "projects"].includes(b.dataset.view))
+      current = null;
+    show(b.dataset.view);
+  }
+  if (b.id === "handoff") {
+    const target = $("#handoffTarget").value;
+    const destination = toolSession(target);
+    if (
+      Object.keys(destination.modules).length &&
+      !confirm(
+        "Send this context to " +
+          target +
+          "? Its existing draft and estimate stay saved; the shared name, material, and inspiration will be updated.",
+      )
+    )
+      return;
+    state.tools[target] = WorkbenchCore.transferTool(
+      project(),
+      destination,
+      target,
+    );
+    save();
+    current = null;
+    show(target);
+    notice("Work copied to this tool. The source remains independent.");
+  }
+  if (b.dataset.priceStone) {
+    const stone = state.stones.find((s) => s.id === b.dataset.priceStone);
+    if (!stone) return;
+    const target = toolSession("pricing");
+    if (
+      !confirm(
+        "Use " +
+          money(stone.price) +
+          " as the Pricing Calculator stone cost? This replaces its current stone-cost input.",
+      )
+    )
+      return;
+    target.modules.pricing = target.modules.pricing || { fields: {} };
+    target.modules.pricing.fields = target.modules.pricing.fields || {};
+    target.modules.pricing.fields.stoneCost = String(stone.price);
+    save();
+    current = null;
+    show("pricing");
+    notice("Stone price copied to Pricing Calculator.");
+  }
   if (b.dataset.open) open(b.dataset.open);
   if (b.hasAttribute("data-new")) $("#new").click();
   if (b.id === "importPricing") importPricing();
@@ -397,6 +519,11 @@ document.addEventListener("input", (event) => {
 });
 document.addEventListener("change", (event) => {
   const el = event.target;
+  if (el.id === "workMode") {
+    current = el.value || null;
+    show(view);
+    return;
+  }
   if (el.dataset.stone) {
     const stone = state.stones.find((s) => s.id === el.dataset.stone);
     if (stone && ["projectId", "status"].includes(el.dataset.field)) {

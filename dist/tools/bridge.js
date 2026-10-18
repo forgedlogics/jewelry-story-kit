@@ -38,7 +38,13 @@ function wbNotify() {
       saved: wbSnapshot(),
       common:
         wbKind === "pricing"
-          ? { name: field.pieceName.value, client: field.clientName.value }
+          ? {
+              name: field.pieceName.value,
+              client: field.clientName.value,
+              ...(wbContext.project.startsWith("tool:")
+                ? { material: field.metalType.selectedOptions[0].textContent }
+                : {}),
+            }
           : wbKind === "story"
             ? {
                 name: $("piece").value,
