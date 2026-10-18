@@ -4,6 +4,15 @@ One project workspace for jewelry design, CAD pricing, stones, launch copy, and 
 
 [Open Jewelry Workbench](https://forgedlogics.github.io/jewelry-story-kit/)
 
+## Quick links
+
+- [All tools](https://forgedlogics.github.io/jewelry-story-kit/)
+- [Story Kit](https://forgedlogics.github.io/jewelry-story-kit/?tool=story)
+- [Campaign Studio](https://forgedlogics.github.io/jewelry-story-kit/?tool=campaign)
+- [Pricing Calculator](https://forgedlogics.github.io/jewelry-story-kit/?tool=pricing)
+- [Diamond Ledger](https://nikunj-diamond-ledger.nikunj-verma.chatgpt.site) — private access
+- [Stone handoff to pricing](https://forgedlogics.github.io/jewelry-story-kit/?tool=stones)
+
 ## Start here
 
 The home screen is a dashboard for four independent tools:

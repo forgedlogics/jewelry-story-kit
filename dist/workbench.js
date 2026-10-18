@@ -19,7 +19,11 @@ const money = (n) =>
 let db,
   state = { version: 1, projects: [], stones: [] },
   current = null,
-  view = "dashboard",
+  view = ["story", "campaign", "pricing", "stones"].includes(
+    new URLSearchParams(location.search).get("tool"),
+  )
+    ? new URLSearchParams(location.search).get("tool")
+    : "dashboard",
   saveQueue = Promise.resolve(),
   frameContext = null;
 function notice(text) {
