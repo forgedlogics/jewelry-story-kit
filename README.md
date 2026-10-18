@@ -1,70 +1,48 @@
-# Jewelry Story Kit
+# Jewelry Workbench
 
-A browser-based workspace that turns a jewelry design brief into launch-ready marketing copy.
+One project workspace for jewelry design, CAD pricing, stones, launch copy, and campaign visuals.
 
-[Open the public demo](https://forgedlogics.github.io/jewelry-story-kit/)
+[Open Jewelry Workbench](https://forgedlogics.github.io/jewelry-story-kit/)
 
-## What it does
+## Start here
 
-Enter a piece name, material, inspiration, audience, and price tier. The tool creates:
+1. Create a project with its piece name, material, and inspiration.
+2. Open **CAD & pricing**. Enter weight or import STL / mesh-based 3DM, add supplier costs, and create a client quote.
+3. Record stones in **Stone library**, assign them to the project, then apply the budget in pricing.
+4. Open **Story & copy**. Build the template-based launch story, then edit each text block directly.
+5. Open **Campaign studio**. Add a sketch and approved product/model images, then export the editorial PDF. Product narrative and email copy travel into the campaign guide and book.
 
-- A product narrative
-- A campaign angle
-- A social-media caption
-- A launch-email subject line
+Try the Tidal Arc Ring example to explore the workflow.
 
-## Why it exists
+## Connected project data
 
-Jewelry concepts often begin with a material, form, or feeling. Jewelry Story Kit helps translate those design decisions into clear language for product pages, social content, and launch planning.
+A shared design brief feeds all three tools. Estimates, editable story blocks, campaign steps, quote photos, and campaign images are saved per project in IndexedDB. Switching tools or reloading restores the work. Use the design brief to update shared context; existing copy stays intact until you rebuild it.
 
-Outputs use structured templates in the browser; no AI service, API key, or account is required. Briefs are not saved.
+Stone records include a supplier, carat weight, total USD price, source URL, verification date, project assignment, and status. Price per carat is calculated from the recorded total. Sold records are excluded from the budget. A row represents one stone or one parcel, not an automatic quantity multiplier.
 
-## Portfolio case study
+## Storage and backups
 
-The built-in Case Study view documents the marketing problem, intended users, and interaction decisions behind the tool.
+This version stores everything in the current browser, under this site's origin. It does not provide accounts or cloud sync. Clearing browser data removes saved work. Export a workspace backup regularly; import it on another device or origin to restore your projects and images. Import replaces the current workspace after confirmation. Individual project exports use the same backup format.
 
-## Built with
+Campaign images support PNG, JPEG, WebP, and GIF up to 8 MB each. Backup import is limited to 50 MB. CAD files are processed locally; their resulting volume and weight are saved, while original CAD files must be kept separately.
 
-- HTML
-- CSS
-- JavaScript
+The original private Diamond Ledger database is not copied, exposed, or migrated. The integrated stone library starts empty; the original Ledger remains linked for existing private inventory and market comparison. Use **Import saved calculator projects** to copy compatible saved BenchMark estimates from this browser. GitHub Pages apps under forgedlogics share one origin, so existing local estimates can be discovered there. Imports keep the original records and avoid duplicates. Data saved on another browser or domain needs an export/import workflow; it cannot be discovered automatically.
 
-## Run locally
+## Image workflow
 
-Open `dist/index.html` in a browser.
+Campaign visuals are uploaded approved images. **Generate in Codex** prepares a prompt and opens ChatGPT; the user generates and approves images there before returning to upload them. Story Kit's optional image-service connection remains available, but is not required and is not guaranteed live. Core project, pricing, copy, and campaign-book workflows require no model API key.
 
-## Status
+Copy uses structured templates rather than live AI research. Pricing is an estimate; confirm supplier costs, tax, specifications, and production details before quoting.
 
-First working version. Future iterations may add editable outputs, saved briefs, and exportable launch plans.
+## Development
 
-## Publishing
+```sh
+python3 -m http.server 4188 --directory dist
+node --test tests/workbench.test.cjs
+```
 
-GitHub Actions publishes the `dist` folder to GitHub Pages when changes are pushed to `main`.
+Open `http://localhost:4188`. GitHub Actions publishes `dist/` to Pages after changes to `main`.
 
-## Expanded launch workspace
+`dist/tools/pricing` reuses BenchMark; `dist/tools/story` preserves the original Story Kit; `dist/tools/campaign` reuses Campaign Studio. A same-origin message bridge connects each tool to the current project. Messages require the active frame, origin, and project token to prevent late writes from another project. Only public source assets are published; workspace records stay in the visitor's browser.
 
-The brief now includes design details, customer motivation, brand voice, campaign goal, and visual direction. Outputs include positioning, a product narrative, product-page structure, a campaign concept, three social posts, a launch email, art direction, and a measurement plan. Copy remains template-based and editable by copying/exporting. Use **Try an example** to explore it. Download the text brief or use Print / PDF.
-
-## Per-brief AI image generation
-
-The interface supports generating and downloading a new concept image from the current brief. **Live image generation is not active until a compatible provider and hosted server are configured.** No API key belongs in the static website.
-
-1. Identify your image API provider and supported model. `server.py` currently supports OpenAI-compatible `/images/generations` providers returning `b64_json`. Other APIs require an adapter; a text-only API key is insufficient.
-2. Deploy this repository as a Render Python web service using `render.yaml`.
-3. Set `IMAGE_API_KEY`, `IMAGE_API_BASE_URL` (including `/v1` where appropriate), and `IMAGE_MODEL` in the service environment. Never commit them.
-4. Set the public service URL in `dist/config.js` and push. The interface checks `/health` before enabling generation.
-5. Validate one real generation before advertising the feature as live. Generated concepts are illustrative rather than verified production renders.
-
-The demo server uses a global ten-request hourly cap per process. Use one worker/instance; a production deployment needs durable rate and budget limits. Briefs are sent to the configured provider on generation and are not stored by this application. The server does not expose provider credentials or raw provider errors.
-
-
-## Cloudflare deployment (current)
-
-The public frontend uses the Cloudflare Worker in `cloudflare/worker.mjs`, configured by `wrangler.jsonc`. It streams the image response from OpenAI to the browser and keeps the API key private. The older Python/Render bridge is an alternative only.
-
-- Deploy: `npx wrangler@4 deploy`
-- Private secret: in Cloudflare → Workers & Pages → jewelry-story-kit-images → Settings → Variables and Secrets, add a **Secret** named `OPENAI_API_KEY`. Or use `npx wrangler@4 secret put OPENAI_API_KEY` interactively; never paste the key into source code or chat.
-- Model: `gpt-image-2`, one 1024×1024 PNG at low quality per request.
-- Persistent shared allowance: ten generation attempts per UTC day across all visitors, enforced before the provider call by a SQLite-backed Durable Object. Failed attempts count. This limits request count rather than guaranteeing a currency spending cap.
-- No prompts or images are saved by the Worker; only the daily counter is persisted. The prompt is sent to OpenAI when a visitor requests generation.
-- Check `/health`: `ready` becomes true when the key is present. This checks configuration only; real generation must still be tested to verify API credit and model access.
+The previous Story Kit documentation is preserved in [docs/STORY_KIT_HISTORY.md](docs/STORY_KIT_HISTORY.md).

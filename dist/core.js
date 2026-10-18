@@ -1,0 +1,88 @@
+(function (root) {
+  "use strict";
+  const object = (v) => v && typeof v === "object" && !Array.isArray(v);
+  const text = (v) => typeof v === "string";
+  const image = (v) =>
+    text(v) &&
+    v.length < 12000000 &&
+    /^data:image\/(png|jpeg|webp|gif);base64,[A-Za-z0-9+/=\s]+$/.test(v);
+  function moduleData(m) {
+    return (
+      object(m) &&
+      (!m.fields ||
+        (object(m.fields) &&
+          Object.values(m.fields).every(
+            (v) => text(v) || typeof v === "boolean",
+          ))) &&
+      (!m.assets ||
+        (object(m.assets) && Object.values(m.assets).every(image))) &&
+      (!m.quoteImages ||
+        (Array.isArray(m.quoteImages) &&
+          m.quoteImages.length <= 4 &&
+          m.quoteImages.every(image))) &&
+      (!m.image || image(m.image)) &&
+      (!m.blocks ||
+        (Array.isArray(m.blocks) &&
+          m.blocks.length <= 50 &&
+          m.blocks.every(
+            (b) => Array.isArray(b) && b.length === 2 && b.every(text),
+          ))) &&
+      (!m.step || (Number.isInteger(m.step) && m.step >= 1 && m.step <= 4))
+    );
+  }
+  function validWorkspace(data) {
+    if (
+      !object(data) ||
+      data.version !== 1 ||
+      !Array.isArray(data.projects) ||
+      !Array.isArray(data.stones) ||
+      data.projects.length > 1000 ||
+      data.stones.length > 10000
+    )
+      return false;
+    const ids = new Set();
+    for (const p of data.projects) {
+      if (
+        !object(p) ||
+        !["id", "name", "material", "inspiration"].every((k) => text(p[k])) ||
+        !p.id ||
+        ids.has(p.id) ||
+        !object(p.modules) ||
+        !Object.entries(p.modules).every(
+          ([k, m]) =>
+            ["pricing", "story", "campaign"].includes(k) && moduleData(m),
+        )
+      )
+        return false;
+      ids.add(p.id);
+    }
+    const stoneIds = new Set();
+    for (const s of data.stones) {
+      if (
+        !object(s) ||
+        !["id", "name", "source", "verified", "status", "projectId"].every(
+          (k) => text(s[k]),
+        ) ||
+        !s.id ||
+        stoneIds.has(s.id) ||
+        !Number.isFinite(s.price) ||
+        s.price < 0 ||
+        !Number.isFinite(s.carat) ||
+        s.carat <= 0 ||
+        !["Available", "Memo", "On hold", "Sold"].includes(s.status) ||
+        (s.projectId && !ids.has(s.projectId))
+      )
+        return false;
+      stoneIds.add(s.id);
+    }
+    return true;
+  }
+  function stoneBudget(stones, id) {
+    return stones
+      .filter((s) => s.projectId === id && s.status !== "Sold")
+      .reduce((sum, s) => sum + s.price, 0);
+  }
+  const api = { validWorkspace, stoneBudget };
+  if (typeof module !== "undefined" && module.exports) module.exports = api;
+  else root.WorkbenchCore = api;
+})(typeof globalThis !== "undefined" ? globalThis : this);
