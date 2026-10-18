@@ -1,0 +1,12 @@
+.strategy-link {
+  display: block;
+  background: transparent;
+  border: 0;
+  color: var(--wine);
+  padding: 15px 0 7px;
+  font-size: 13px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.strategy-note { max-width: 420px; }

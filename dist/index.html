@@ -1,57 +1,94 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="A practical jewelry storytelling and launch-copy workspace.">
-  <title>Jewelry Story Kit</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231e211c'/%3E%3Cpath d='M16 5 25 16 16 27 7 16Z' fill='none' stroke='%23e9d5a7' stroke-width='2'/%3E%3C/svg%3E">
-  <style>
-    :root { --ink:#1e211c; --paper:#f5f3ed; --gold:#b88d46; --soft:#e8e2d5; --muted:#686a63; --line:#d6d1c5; }
-    * { box-sizing:border-box; } body { margin:0; background:var(--paper); color:var(--ink); font-family:'DM Sans',sans-serif; }
-    header { display:flex; align-items:center; justify-content:space-between; padding:22px clamp(20px,6vw,82px); border-bottom:1px solid var(--line); }
-    .brand { display:flex; align-items:center; gap:11px; font:500 14px 'DM Mono',monospace; letter-spacing:.04em; } .gem{ width:20px;height:20px; border:1.5px solid var(--gold); transform:rotate(45deg); }
-    nav button { background:none; border:0; color:var(--muted); cursor:pointer; padding:8px 0 8px 24px; font:500 14px 'DM Sans'; } nav button.active { color:var(--ink); text-decoration:underline; text-underline-offset:5px; }
-    main{ max-width:1320px; margin:auto; padding:clamp(40px,7vw,92px) clamp(20px,6vw,82px); } .eyebrow{ color:var(--gold); font:500 12px 'DM Mono'; letter-spacing:.1em; text-transform:uppercase; margin:0 0 18px; }
-    h1 { max-width:820px; font:600 clamp(43px,6vw,78px)/.98 'Playfair Display',serif; letter-spacing:-.045em; margin:0 0 20px; } .lede{ max-width:630px; color:var(--muted); font-size:18px; line-height:1.55; margin:0 0 52px; }
-    .workspace { display:grid; grid-template-columns:minmax(280px,.9fr) minmax(300px,1.1fr); gap:38px; align-items:start; } .panel { border:1px solid var(--line); background:#faf9f5; padding:26px; }
-    .panel h2 { font:600 27px 'Playfair Display'; margin:0 0 5px; } .panel>p { color:var(--muted); font-size:14px; margin:0 0 26px; line-height:1.45; }
-    label{ display:block; font:500 12px 'DM Mono'; letter-spacing:.06em; margin:17px 0 7px; text-transform:uppercase; } input,select,textarea { width:100%; background:var(--paper); border:1px solid var(--line); border-radius:0; color:var(--ink); font:15px 'DM Sans'; padding:12px; } textarea{ resize:vertical; min-height:76px; }
-    .button { margin-top:23px; width:100%; border:0; background:var(--ink); color:#fff; padding:14px; font:700 13px 'DM Sans'; letter-spacing:.05em; cursor:pointer; } .button:hover{ background:var(--gold); }
-    .result { background:var(--ink); color:#f7f3e9; min-height:530px; padding:30px; } .placeholder{ color:#bfc0ba; font:400 17px/1.55 'Playfair Display'; max-width:330px; margin-top:118px; } .output{ display:none; } .output.show{ display:block; } .output h2{ font:600 34px 'Playfair Display'; margin:4px 0 27px; } .tag{ color:#e9d5a7; font:500 11px 'DM Mono'; letter-spacing:.12em; text-transform:uppercase; } .copy-block{ border-top:1px solid #50534c; padding:17px 0; } .copy-block h3{ color:#e9d5a7; font:500 11px 'DM Mono'; letter-spacing:.1em; margin:0 0 8px; text-transform:uppercase; } .copy-block p{ margin:0; font-size:15px; line-height:1.55; }
-    .case{ display:none; max-width:880px; } .case.show{ display:block; } .case h1{ margin-bottom:30px; }.case-grid{ display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line); border:1px solid var(--line);}.case-grid section{ background:#faf9f5;padding:28px; }.case-grid h2{font:600 25px 'Playfair Display'; margin:0 0 10px;}.case-grid p,.case-grid li{color:var(--muted);line-height:1.55;font-size:15px;}.case-grid ul{padding-left:19px;margin-bottom:0;}
-    .footer{ margin-top:70px; border-top:1px solid var(--line); padding-top:18px; color:var(--muted); font:12px 'DM Mono';}
-    @media(max-width:760px){ header{padding:18px 20px}.workspace{grid-template-columns:1fr;gap:20px}.result{min-height:420px}.case-grid{grid-template-columns:1fr} nav button{padding-left:12px} }
-  .secondary{display:inline-block;border:1px solid var(--line);padding:12px 16px;background:transparent;color:inherit;cursor:pointer;margin:10px 8px 0 0;font:500 13px 'DM Sans',sans-serif}.result .secondary{border-color:#75786d}.note{font-size:12px!important;line-height:1.6!important;color:var(--muted)}.actions{display:flex;flex-wrap:wrap}.visual-panel{border-top:1px solid var(--line);margin-top:50px;padding-top:35px;max-width:850px}.visual-panel h2{font:600 38px 'Playfair Display';margin:0 0 14px}.visual-panel .button{max-width:320px}.button:disabled{opacity:.5;cursor:not-allowed}#generatedImage{display:block;max-width:100%;max-height:700px;margin-top:25px;object-fit:contain}#generatedImage[hidden],a[hidden]{display:none}pre{white-space:pre-wrap;font:13px/1.6 'DM Mono',monospace;overflow-wrap:anywhere}input,textarea,select{max-width:100%}.copy-block p{white-space:pre-line}@media print{header,.panel,.actions,.visual-panel button,.footer,details,#copyStatus{display:none!important}main{padding:0}.workspace{display:block}.result{color:#111;background:white;padding:0}.copy-block h3,.tag{color:#555}.copy-block{break-inside:avoid}.visual-panel{break-before:page}body{background:white}.output{display:block}}
-</style>
-</head>
-<body>
-  <header><div class="brand"><span class="gem" aria-hidden="true"></span> JEWELRY STORY KIT</div><nav><button class="active" data-view="tool">The Tool</button><button data-view="case">Case Study</button></nav></header>
-  <main>
-    <section id="toolView"><p class="eyebrow">Collection storytelling workspace</p><h1>Give each piece a story worth wearing.</h1><p class="lede">Turn a jewelry concept into a concise product narrative, campaign angle, social caption, and launch-email direction. Build a detailed launch brief, channel copy, and an art direction for your next collection.</p>
-      <div class="workspace"><form class="panel" id="brief"><h2>Piece brief</h2><p>Start with what you know. The kit shapes the marketing language around it.</p>
-        <label for="piece">Piece or collection name</label><input id="piece" maxlength="150" required placeholder="e.g. Tidal Arc Ring">
-        <label for="material">Material</label><input id="material" maxlength="300" required placeholder="e.g. Recycled sterling silver">
-        <label for="inspiration">Inspiration</label><textarea id="inspiration" maxlength="1200" required placeholder="e.g. The soft curves left by ocean currents"></textarea>
-        <label for="audience">Audience</label><select id="audience"><option>Design-conscious everyday wearer</option><option>Gift buyer seeking meaning</option><option>Luxury collector</option><option>Creative, fashion-forward customer</option></select>
-        <label for="tier">Price tier</label><select id="tier"><option>Accessible premium</option><option>Contemporary luxury</option><option>Fine jewelry</option></select>
-        <label for="detail">Design details & construction</label><textarea id="detail" maxlength="1200" placeholder="Stone shapes, setting, silhouette, dimensions, finish"></textarea>
-<label for="benefit">Customer motivation</label><input id="benefit" maxlength="300" placeholder="What should this piece help the wearer express?">
-<label for="tone">Brand voice</label><select id="tone"><option>Refined and editorial</option><option>Warm and personal</option><option>Bold and expressive</option></select>
-<label for="goal">Campaign goal</label><select id="goal"><option>Launch awareness</option><option>Product discovery</option><option>Consultation inquiries</option></select>
-<label for="visual">Image direction</label><select id="visual"><option>Studio product photograph</option><option>Editorial still life</option><option>Macro detail</option></select>
-<label for="palette">Visual palette & setting</label><input id="palette" maxlength="300" placeholder="Ivory stone, warm shadows, soft side lighting">
-<button class="button" type="submit">Build launch story</button><button class="secondary" type="button" id="example">Try an example</button><p class="note">Copy is a structured starting point. Review product facts before publishing.</p>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Jewelry Workbench — From design to launch</title>
+    <meta
+      name="description"
+      content="One jewelry workspace for projects, CAD pricing, stones, storytelling, and campaign visuals."
+    />
+    <link rel="stylesheet" href="workbench.css" />
+  </head>
+  <body>
+    <aside class="sidebar">
+      <a class="brand" href="./"
+        >◇ <span>JEWELRY<br /><b>WORKBENCH</b></span></a
+      >
+      <p class="eyebrow">THE STUDIO</p>
+      <nav>
+        <button data-view="projects" class="active">▦ Projects</button
+        ><button data-view="stones">◇ Stone library</button>
+      </nav>
+      <div class="project-nav" id="projectNav" hidden>
+        <p class="eyebrow">CURRENT PROJECT</p>
+        <p id="projectName"></p>
+        <nav>
+          <button data-view="brief">01 · Design brief</button
+          ><button data-view="pricing">02 · CAD & pricing</button
+          ><button data-view="story">03 · Story & copy</button
+          ><button data-view="campaign">04 · Campaign studio</button>
+        </nav>
+      </div>
+      <div class="side-bottom">
+        <span id="saveStatus" role="status">Opening workspace…</span>
+        <p>
+          Projects and images stay in this browser.<br />Keep a backup before
+          switching devices.
+        </p>
+        <button id="backup">Export workspace ↗</button
+        ><label class="import"
+          >Import backup<input
+            id="restore"
+            type="file"
+            accept="application/json"
+            hidden
+        /></label>
+      </div>
+    </aside>
+    <div class="shell">
+      <header>
+        <div>
+          <span class="eyebrow">FROM THE FIRST LINE TO THE FINAL LAUNCH</span>
+          <h1 id="title">Projects</h1>
+        </div>
+        <button class="primary" id="new">＋ New project</button>
+      </header>
+      <main id="main"></main>
+      <p id="notice" role="status" aria-live="polite"></p>
+      <footer>
+        Jewelry Workbench · A forgedlogics studio tool · USD estimates · Review
+        specifications before production.
+      </footer>
+    </div>
+    <dialog id="newDialog" aria-labelledby="newTitle">
+      <form id="newForm">
+        <div class="row">
+          <h2 id="newTitle">Start with a piece.</h2>
+          <button type="button" id="close" aria-label="Close">✕</button>
+        </div>
+        <label
+          >Piece or collection name<input
+            name="name"
+            required
+            maxlength="150"
+            placeholder="Tidal Arc Ring" /></label
+        ><label
+          >Material<input
+            name="material"
+            required
+            maxlength="300"
+            placeholder="Sterling silver, satin finish" /></label
+        ><label
+          >Inspiration<textarea
+            name="inspiration"
+            maxlength="1200"
+            placeholder="Where did the idea begin?"
+          ></textarea></label
+        ><button class="primary">Create project →</button>
       </form>
-      <section class="result" aria-live="polite"><div class="placeholder" id="placeholder">Your story direction will appear here—ready to adapt for a product page, social post, or launch email.</div><div class="output" id="output"><p class="tag">Your launch story</p><h2 id="outTitle"></h2><div id="storyBlocks"></div><div class="actions"><button class="secondary" id="copy">Copy complete brief</button><button class="secondary" id="download">Download brief</button><button class="secondary" id="print">Print / PDF</button></div><p id="copyStatus" role="status"></p></div></section>
-      </div></section>
-    <section id="caseView" class="case"><p class="eyebrow">Portfolio case study</p><h1>Translating jewelry design into launch-ready storytelling.</h1><div class="case-grid"><section><h2>The problem</h2><p>Early-stage jewelry concepts often have material and visual direction, but not a concise narrative that can guide a product page, campaign, or customer conversation.</p></section><section><h2>The response</h2><p>Jewelry Story Kit turns a short design brief into a connected set of marketing directions—using material, form, audience, tone, and campaign goals to structure a detailed launch brief.</p></section><section><h2>Audience</h2><p>Independent jewelry designers, emerging brands, and creative marketers planning a product or collection launch.</p></section><section><h2>Core decisions</h2><ul><li>Start with the designer’s existing vocabulary</li><li>Make the first useful output immediate</li><li>Connect product copy to campaign and email language</li><li>Use a calm editorial interface that keeps focus on the piece</li></ul></section></div></section>
-    <section class="visual-panel"><p class="eyebrow">Campaign image studio</p><h2>Bring your brief into focus.</h2><p>Create a concept image from your current piece, materials, design details, and art direction.</p><button class="button" id="generate" disabled>Generate campaign image</button><p id="imageStatus" role="status">Checking image studio connection…</p><img id="generatedImage" hidden alt="AI-generated jewelry campaign concept based on your brief"><a id="imageDownload" class="secondary" hidden download="jewelry-campaign.png">Download image</a><p class="note">Generated concepts may differ from a manufactured piece. Review stone placement and construction.</p><details><summary>View image brief</summary><pre id="imagePrompt">Build your launch story to prepare the image brief.</pre></details></section>
-<p class="footer">A forgedlogics project · Jewelry, brand storytelling, and creative technology.</p>
-  </main>
-  <script src="config.js"></script><script src="app.js"></script>
-</body>
+    </dialog>
+    <script src="core.js"></script>
+    <script src="workbench.js"></script>
+  </body>
 </html>
