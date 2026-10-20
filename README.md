@@ -68,3 +68,11 @@ Open `http://localhost:4188`. GitHub Actions publishes `dist/` to Pages after ch
 `dist/tools/pricing` reuses BenchMark; `dist/tools/story` preserves the original Story Kit; `dist/tools/campaign` reuses Campaign Studio. A same-origin message bridge connects each tool to the current project. Messages require the active frame, origin, and project token to prevent late writes from another project. Only public source assets are published; workspace records stay in the visitor's browser.
 
 The previous Story Kit documentation is preserved in [docs/STORY_KIT_HISTORY.md](docs/STORY_KIT_HISTORY.md).
+
+## Editorial Lookbook
+
+Open **Editorial Lookbook** in the main navigation, or **Create editorial PDF** under Diamond Ledger. Upload approved JPG/PNG/WebP images or find data-URL images saved in your Workbench tools, select/reorder them, and add verified captions. Enter brand, collection theme, confirmed facts and inquiry destination. Generate/edit a local starter story, review the preview, then download an A4 editorial PDF directly.
+
+The PDF includes a cover, collection story, one plate per selected image, concept/development labels and a clickable inquiry invitation. No AI API is needed. The optional chat prompt supports richer externally written copy; the local generator does not analyze image contents or invent material specifications. The lookbook has separate browser storage and a dedicated editable JSON backup; the main workspace backup does not include it. No email is sent automatically.
+
+Images are resized to a maximum 2200-pixel long edge and JPEG-compressed locally; PDF copy is bounded to prevent overflow. Export allows up to ten selected images. Use original/authorized assets and verify content before customer distribution. jsPDF 4.2.1 is vendored under its included MIT license; no CDN is required.
