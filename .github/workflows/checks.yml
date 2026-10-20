@@ -13,3 +13,6 @@ jobs:
           node-version: '22'
       - run: node --test tests/workbench.test.cjs
       - run: node --check dist/workbench.js && node --check dist/core.js && node --check dist/tools/bridge.js
+
+      - run: node --check dist/tools/lookbook/lookbook.js
+      - run: node --test tests/lookbook.test.cjs
