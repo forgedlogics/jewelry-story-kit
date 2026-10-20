@@ -76,3 +76,5 @@ Open **Editorial Lookbook** in the main navigation, or **Create editorial PDF** 
 The PDF includes a cover, collection story, one plate per selected image, concept/development labels and a clickable inquiry invitation. No AI API is needed. The optional chat prompt supports richer externally written copy; the local generator does not analyze image contents or invent material specifications. The lookbook has separate browser storage and a dedicated editable JSON backup; the main workspace backup does not include it. No email is sent automatically.
 
 Images are resized to a maximum 2200-pixel long edge and JPEG-compressed locally; PDF copy is bounded to prevent overflow. Export allows up to ten selected images. Use original/authorized assets and verify content before customer distribution. jsPDF 4.2.1 is vendored under its included MIT license; no CDN is required.
+
+Lookbook colors are sampled from the selected images locally. A shared image-derived palette colors the story/inquiry pages, rules and CTA, while tinted overlays preserve white-text readability over full-bleed imagery. Preview and PDF recompute the same palette when the image selection changes.
