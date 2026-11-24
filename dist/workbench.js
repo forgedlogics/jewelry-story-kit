@@ -19,11 +19,11 @@ const money = (n) =>
 let db,
   state = { version: 1, projects: [], stones: [] },
   current = null,
-  view = ["story", "campaign", "pricing", "stones", "lookbook"].includes(
+  view = ["market", "story", "campaign", "pricing", "stones", "lookbook"].includes(
     new URLSearchParams(location.search).get("tool"),
   )
     ? new URLSearchParams(location.search).get("tool")
-    : "dashboard",
+    : "market",
   saveQueue = Promise.resolve(),
   frameContext = null;
 function notice(text) {
@@ -129,6 +129,7 @@ function render() {
   $("#title").textContent =
     {
       dashboard: "Your tools",
+      market: "Market Price Checker",
       projects: "Saved linked work",
       stones: "Diamond Ledger",
       lookbook: "Editorial Lookbook",
@@ -138,36 +139,47 @@ function render() {
       campaign: "Campaign Studio",
     }[view] || "Your projects";
   const main = $("#main");
+  if (view === "market") {
+    main.innerHTML = '<iframe title="Market Price Checker" src="market/index.html?v=20261124" style="width:100%;height:calc(100vh - 120px);min-height:760px;border:0"></iframe>';
+    return;
+  }
   if (view === "lookbook") {
     main.innerHTML = '<p class="muted">Create an original fashion-editorial customer book from approved images and editable story copy. Export the PDF directly; no AI API required.</p><iframe title="Editorial Lookbook" src="tools/lookbook/index.html?v=20261020" style="width:100%;height:86vh;border:1px solid #403629"></iframe>';
     return;
   }
   if (view === "dashboard") {
-    main.innerHTML = `<section class="hero"><div><p class="eyebrow">FOUR TOOLS. YOUR WAY OF WORKING.</p><h2>Open the tool you need.<br>Connect it when you want.</h2><p>Use each tool on its own, or send a brief, estimate, or launch story to another tool. No jewelry-piece project is required.</p></div><div class="hero-mark" aria-hidden="true">◇</div></section><div class="cards tool-cards">${[
+    main.innerHTML = `<section class="hero"><div><p class="eyebrow">A CLEARER JEWELRY WORKSPACE</p><h2>Check the market first.<br>Then build the piece.</h2><p>Use the market checker for a source-backed diamond reference, then move into production pricing, storytelling, or campaign work.</p><button class="primary" data-view="market">Open Market Price Checker ↗</button></div><div class="hero-mark" aria-hidden="true">◇</div></section><div class="cards tool-cards">${[
+      [
+        "market",
+        "01",
+        "Market Price Checker",
+        "Check natural and lab-grown diamond benchmarks by carat, shape, color, and clarity.",
+        "Check diamond price",
+      ],
       [
         "story",
-        "01",
+        "02",
         "Story Kit",
         "Write and edit product stories, social copy, and launch emails.",
         "Open Story Kit",
       ],
       [
         "campaign",
-        "02",
+        "03",
         "Campaign Studio",
         "Build visual campaigns and export an editorial campaign book.",
         "Open Campaign Studio",
       ],
       [
         "stones",
-        "03",
+        "04",
         "Diamond Ledger",
         "Access your private inventory, or prepare stone costs to use in pricing.",
         "Open Diamond Ledger",
       ],
       [
         "pricing",
-        "04",
+        "05",
         "Pricing Calculator",
         "Estimate CAD weight, production costs, selling prices, and client quotes.",
         "Open Pricing Calculator",
@@ -175,7 +187,7 @@ function render() {
     ]
       .map(
         ([id, num, title, description, label]) =>
-          `<article class="card"><span class="badge">TOOL ${num}</span><h3>${title}</h3><p>${description}</p><button ${id === "stones" ? 'data-view="stones"' : `data-tool="${id}"`} class="primary">${label} ↗</button></article>`,
+          `<article class="card"><span class="badge">TOOL ${num}</span><h3>${title}</h3><p>${description}</p><button ${["stones", "market"].includes(id) ? `data-view="${id}"` : `data-tool="${id}"`} class="primary">${label} ↗</button></article>`,
       )
       .join(
         "",
